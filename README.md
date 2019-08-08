@@ -1,4 +1,4 @@
-###CBNU CERT Hompage Project
+### CBNU CERT Hompage Project
 start from 1 Aug 2019
 
 #### project dependency
@@ -14,7 +14,4 @@ start from 1 Aug 2019
 2. CERT_DATABASE_URL
 
 #### run script
-1. flask db init
-2. flask db migrate
-3. flask db upgrade
-4. flask run
+1. flask run

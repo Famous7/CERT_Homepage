@@ -12,6 +12,7 @@ def load_user(id):
 
 class User(db.Model, UserMixin):
     __tablename__ ="user_tbl"
+    __table_args__ = {'mysql_collate': 'utf8_general_ci'}
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.String(12), index=True, unique=True)
@@ -37,6 +38,9 @@ class User(db.Model, UserMixin):
 
     def __repr__(self):
         return '<USER {}>'.format(self.user_id)
+
+    def as_dict(self):
+        return {x.name: getattr(self, x.name) for x in self.__table__.columns}
 
     def set_user_pw(self, password):
         self.user_pw = generate_password_hash(password)

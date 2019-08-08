@@ -44,6 +44,7 @@ class SignUpForm(FlaskForm):
         if user:
             raise ValidationError('Please use a different email address.')
 
+    # KISA password rule
     def validate_user_password(self, user_password):
         password = user_password.data
         if not self.password_pattern.match(password):
