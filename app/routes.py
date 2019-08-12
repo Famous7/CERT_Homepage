@@ -1,9 +1,8 @@
-from app import app, login
-import models
+from app import app, login, models
 from flask import render_template, request, redirect, url_for, flash
 from flask_login import login_user, login_required, current_user, logout_user
 import dbHelper
-from forms import SignInForm, SignUpForm
+from app.forms import SignInForm, SignUpForm
 
 
 @login.unauthorized_handler

@@ -11,9 +11,4 @@ login = LoginManager(app)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
-import routes
-import errors
-
-if __name__ == "__main__":
-   app.run()
-
+from app import routes
