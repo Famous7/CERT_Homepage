@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container">
+        <br/>
+        <br/>
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <header class="card-header">
+                        User Info Modify
+                    </header>
+                    <article class="card-body">
+                        <form method="post">
+                            {{ form.hidden_tag() }}
+                            <div class="form-row">
+                                <div class="col form-group">
+                                    <label>Your Name </label>
+                                    <input type="text" readonly="readonly" name="user_name" class="form-control"
+                                           placeholder="" value="{{ form.user_name.data }}">
+                                </div> <!-- form-group end.// -->
+                            </div> <!-- form-row end.// -->
+
+                            <div class="form-group">
+                                <label>About Me </label>
+                                <input type="text" name="user_about_me" class="form-control"
+                                       placeholder="" value="{{ form.user_about_me.data }}">
+                            </div> <!-- form-group end.// -->
+
+                            <div class="form-group">
+                                <label>Email address</label>
+                                <input type="email" readonly="readonly" name="user_email" class="form-control"
+                                       placeholder=""
+                                       maxlength="35" value="{{ form.user_email.data }}">
+                                <small class="form-text text-muted">We'll never share your email with anyone else.
+                                </small>
+
+                            </div> <!-- form-group end.// -->
+
+                            <div class="form-group">
+                                <label>ID</label>
+                                <input type="text" readonly="readonly" name="user_id" class="form-control"
+                                       placeholder="" maxlength="12" value="{{ form.user_id.data }}">
+                            </div> <!-- form-group end.// -->
+
+                            <div class="form-group">
+                                <label>Password</label>
+                                <input type="password" name="user_password" class="form-control" placeholder=""
+                                       maxlength="20">
+
+                                <small class="form-text text-muted">English lowercase, uppercase, numbers, special
+                                    characters((!@#$%^*+=-_))<br>
+                                    <span class="text-info">[2 combinations : 10 characters or more, 3 combinations : 8 characters or more]</span>
+                                </small>
+
+                                {% for error in form.user_password.errors %}
+                                    <span id="user_password_help" class="text-danger">[{{ error }}]</span>
+                                {% endfor %}
+
+                            </div><!-- form-group end.// -->
+                            <div class="form-group">
+                                <label>Repeat Password</label>
+                                <input type="password" name="user_repeat_password" class="form-control" placeholder=""
+                                       maxlength="20">
+
+                                <small class="form-text text-muted">Repeat your password correctly</small>
+
+                                {% for error in form.user_repeat_password.errors %}
+                                    <span id="user_repeat_password_help" class="text-danger">[{{ error }}]</span>
+                                {% endfor %}
+
+                            </div> <!-- form-group end.// -->
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    {{ form.user_department.label }}
+                                    {{ form.user_department(class_="form-control") }}
+
+                                    {% for error in form.user_department.errors %}
+                                        <span id="user_department_help" class="text-danger">[{{ error }}]</span>
+                                    {% endfor %}
+
+                                </div> <!-- form-group end.// -->
+                                <div class="form-group col-md-6">
+                                    {{ form.user_grade.label }}
+                                    {{ form.user_grade(class_="form-control") }}
+
+                                    {% for error in form.user_grade.errors %}
+                                        <span id="user_id_help" class="text-danger">[{{ error }}]</span>
+                                    {% endfor %}
+
+                                </div> <!-- form-group end.// -->
+                            </div> <!-- form-row.// -->
+                            <div class="form-group">
+                                <button id="btn_save" class="btn btn-primary btn-block" type="submit"> Save
+                                </button>
+                            </div> <!-- form-group// -->
+                        </form>
+                    </article> <!-- card-body end .// -->
+                </div> <!-- card.// -->
+            </div> <!-- col.//-->
+        </div> <!-- row.//-->
+    </div>
+    <!--container end.//-->
+    <br/>
+    <!-- Bootstrap core JavaScript -->
+    <script src="{{ url_for('static', filename='vendor/jquery/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+
+{% endblock %}
