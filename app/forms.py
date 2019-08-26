@@ -1,8 +1,13 @@
+from flask import abort
 from flask_wtf import FlaskForm
+from werkzeug.security import check_password_hash
 from wtforms import StringField, PasswordField, BooleanField, RadioField, SelectField
 from wtforms.validators import DataRequired, Email, ValidationError, EqualTo
 import re
 from app.models import User
+import dbHelper
+from flask_login import current_user
+
 
 id_pattern = re.compile('^[a-zA-Z0-9_]{4,20}$')
 password_pattern = re.compile('^[a-zA-Z0-9!@#$%^*+=-_]{8,}$')
@@ -32,13 +37,26 @@ def validate_password_by_kisa_rule(user_password):
         raise ValidationError('Please use a password of at least 8 characters in 3 combination.')
 
 
+class ChangePasswordForm(FlaskForm):
+    user_password_old = StringField('Old User Password', validators=[DataRequired()])
+    user_password_new = StringField('New User Password', validators=[DataRequired()])
+    user_password_new_repeat = StringField('New User Password Repeat', validators=[DataRequired(),
+                                                                                   EqualTo('user_password_new')])
+
+    def validate_user_password_old(self, user_password_old):
+        if not current_user.check_user_pw(user_password_old.data):
+            raise ValidationError('Please enter a correct password!!')
+
+    def validate_user_password_new(self, user_password_new):
+        validate_password_by_kisa_rule(user_password_new)
+
+
 class EditUserForm(FlaskForm):
     user_id = StringField('ID')
     user_name = StringField('Name')
     user_email = StringField('E-Mail')
     user_about_me = StringField('About Me', validators=[DataRequired()])
     user_password = PasswordField('Password', validators=[DataRequired()])
-    user_repeat_password = PasswordField('Repeat Password', validators=[DataRequired(), EqualTo('user_password')])
     user_department = SelectField('Department', choices=[('COM', '컴퓨터공학과'), ('SWE', '소프트웨어학과'),
                                                          ('BIS', '경영학과'), ('MIS', '경영정보학과'), ('ETC', '기타')],
                                   validators=[DataRequired()])
@@ -46,7 +64,16 @@ class EditUserForm(FlaskForm):
                              validators=[DataRequired()])
 
     def validate_user_password(self, user_password):
-        validate_password_by_kisa_rule(user_password)
+        if not current_user.check_user_pw(user_password.data):
+            raise ValidationError('Please enter a correct password!!')
+
+    def validate_user_email(self, user_email):
+        if user_email.data == current_user.user_email:
+            raise ValidationError('Please enter a different email address!!')
+
+        user = User.query.filter_by(user_email=user_email.data).first()
+        if user:
+            raise ValidationError('Please enter a different email address!!')
 
 
 class SignInForm(FlaskForm):
